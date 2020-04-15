@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/employees")
 public class EmployeeController {
     private List<Employee> employees = new ArrayList<>();
+    private int uniqueId = 0;
     @GetMapping
     public List<Employee> getAllEmployee() {
         return employees;
@@ -23,7 +24,7 @@ public class EmployeeController {
         if (employees.stream().anyMatch(employeeInList -> employeeInList.getName().equals(employee.getName()))) {
             return "cannot add";
         }
-        employee.setId(employees.size());
+        employee.setId(uniqueId++);
         employees.add(employee);
         return "added";
     }
@@ -90,5 +91,18 @@ public class EmployeeController {
             return "deleted";
         }
         return "Gender not found";
+    }
+
+    @PutMapping("/change-info-by-id")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String changeEmployeeInfoById(@RequestBody Employee employee) {
+        if (employees.stream().anyMatch(employeeInList -> employeeInList.getId() == employee.getId())) {
+            Employee employeeToChange = employees.stream().filter(employeeInList -> employeeInList.getId() == employee.getId()).findFirst().orElse(null);
+            employeeToChange.setAge(employee.getAge());
+            employeeToChange.setName(employee.getName());
+            employeeToChange.setGender(employee.getGender());
+            return "changed";
+        }
+        return "ID not found";
     }
 }
