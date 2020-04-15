@@ -54,11 +54,41 @@ public class EmployeeController {
 
     @DeleteMapping("/delete-by-name")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String deleteEmployee(@RequestBody String name) {
+    public String deleteEmployeeByName(@RequestBody String name) {
         if (employees.stream().anyMatch(employee -> employee.getName().equals(name))) {
             employees = employees.stream().filter(employee -> !employee.getName().equals(name)).collect(Collectors.toList());
             return "deleted";
         }
         return "Name not found";
+    }
+
+    @DeleteMapping("/delete-by-id")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String deleteEmployeeById(@RequestBody Integer id) {
+        if (employees.stream().anyMatch(employee -> employee.getId() == id)) {
+            employees = employees.stream().filter(employee -> employee.getId() != id).collect(Collectors.toList());
+            return "deleted";
+        }
+        return "ID not found";
+    }
+
+    @DeleteMapping("/delete-by-age")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String deleteEmployeeByAge(@RequestBody Integer age) {
+        if (employees.stream().anyMatch(employee -> employee.getAge() == age)) {
+            employees = employees.stream().filter(employee -> employee.getAge() != age).collect(Collectors.toList());
+            return "deleted";
+        }
+        return "Age not found";
+    }
+
+    @DeleteMapping("/delete-by-gender")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String deleteEmployeeByGender(@RequestBody String gender) {
+        if (employees.stream().anyMatch(employee -> employee.getGender().equals(gender))) {
+            employees = employees.stream().filter(employee -> !employee.getGender().equals(gender)).collect(Collectors.toList());
+            return "deleted";
+        }
+        return "Gender not found";
     }
 }
