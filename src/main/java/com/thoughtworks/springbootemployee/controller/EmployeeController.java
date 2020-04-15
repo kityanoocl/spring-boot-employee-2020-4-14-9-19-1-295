@@ -36,8 +36,20 @@ public class EmployeeController {
 
     @PostMapping("/search-by-id")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<Employee> findEmployeeByName(@RequestBody Integer id) {
+    public List<Employee> findEmployeeById(@RequestBody Integer id) {
         return employees.stream().filter(employee -> employee.getId() == id).collect(Collectors.toList());
+    }
+
+    @PostMapping("/search-by-age")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<Employee> findEmployeeByAge(@RequestBody Integer age) {
+        return employees.stream().filter(employee -> employee.getAge() == age).collect(Collectors.toList());
+    }
+
+    @PostMapping("/search-by-gender")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<Employee> findEmployeeByGender(@RequestBody String gender) {
+        return employees.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
     }
 
     @DeleteMapping("/delete-by-name")
