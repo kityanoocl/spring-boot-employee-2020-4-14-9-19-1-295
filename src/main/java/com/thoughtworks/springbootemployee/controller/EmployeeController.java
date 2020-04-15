@@ -30,8 +30,14 @@ public class EmployeeController {
 
     @PostMapping("/search-by-name")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Employee findEmployeeByName(@RequestBody String name) {
-        return employees.stream().filter(employee -> employee.getName().equals(name)).findFirst().orElse(null);
+    public List<Employee> findEmployeeByName(@RequestBody String name) {
+        return employees.stream().filter(employee -> employee.getName().equals(name)).collect(Collectors.toList());
+    }
+
+    @PostMapping("/search-by-id")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<Employee> findEmployeeByName(@RequestBody Integer id) {
+        return employees.stream().filter(employee -> employee.getId() == id).collect(Collectors.toList());
     }
 
     @DeleteMapping("/delete-by-name")
