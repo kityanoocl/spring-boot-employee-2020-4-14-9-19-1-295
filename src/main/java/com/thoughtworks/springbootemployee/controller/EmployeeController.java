@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
@@ -31,5 +32,15 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Employee findEmployeeByName(@RequestBody String name) {
         return employees.stream().filter(employee -> employee.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    @DeleteMapping("/delete-by-name")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public String deleteEmployee(@RequestBody String name) {
+        if (employees.stream().anyMatch(employee -> employee.getName().equals(name))) {
+            employees = employees.stream().filter(employee -> !employee.getName().equals(name)).collect(Collectors.toList());
+            return "deleted";
+        }
+        return "Name not found";
     }
 }
